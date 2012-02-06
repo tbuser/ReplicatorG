@@ -887,6 +887,7 @@ public class GCodeParser {
 			commands.add(new replicatorg.drivers.commands.SetSpindleRPM(gcode.getCodeValue('S')));
 			break;	
 		case G130:
+			/// This command handles settings digital potentiometer values for a The Replicator w. digital pot values.
 			/// TODO:  axis ids should not be hard coded
 			if (gcode.hasCode('X'))
 				commands.add(new replicatorg.drivers.commands.SetStepperVoltage(0, (int)gcode.getCodeValue('X')));
