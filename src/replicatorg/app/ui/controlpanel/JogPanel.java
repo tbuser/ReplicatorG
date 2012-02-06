@@ -3,6 +3,7 @@ package replicatorg.app.ui.controlpanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -38,14 +39,7 @@ import replicatorg.util.Point5d;
 
 public class JogPanel extends JPanel implements ActionListener, MouseListener
 {
-	
-	private class Point2i {
-		public int x, y;
-		public Point2i(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+
 	private final String JOGMODE_PREF_NAME = "controlpanel.jogmode";
 	
 	protected boolean continuousJogMode = false;
@@ -88,7 +82,7 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 		public String pressedButtonString = "Down";
 
 		public String backgroundImageString = null;
-		public Point2i backgroundImageLocation = null;
+		public Point backgroundImageLocation = null;
 
 		public String xMinusButtonString = "X-";
 		public String xPlusButtonString = "X+";
@@ -104,19 +98,19 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 		public String zMinusTooltip = "Jog Z axis in negative direction";
 		public String zPlusTooltip = "Jog Z axis in positive direction";
 		
-		public Point2i xMinusButtonLocation;
-		public Point2i xPlusButtonLocation;
-		public Point2i yMinusButtonLocation;
-		public Point2i yPlusButtonLocation;
-		public Point2i zMinusButtonLocation;
-		public Point2i zPlusButtonLocation;
+		public Point xMinusButtonLocation;
+		public Point xPlusButtonLocation;
+		public Point yMinusButtonLocation;
+		public Point yPlusButtonLocation;
+		public Point zMinusButtonLocation;
+		public Point zPlusButtonLocation;
 		
 		public String stopButtonString = "panic";
 		public String stopTooltip = "Emergency stop";
-		public Point2i stopButtonLocation = null;
+		public Point stopButtonLocation = null;
 
-		public Point2i axisAPanelLocation;
-		public Point2i axisBPanelLocation;
+		public Point axisAPanelLocation;
+		public Point axisBPanelLocation;
 
 		public double xScale = 1;
 		public double yScale = 1;
@@ -127,8 +121,8 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 		
 		public abstract JPanel getButtonPanel();
 		
-		public Point2i scalePoint(double x, double y) {
-			return new Point2i((int)(x * xScale), (int)(y * yScale));
+		public Point scalePoint(double x, double y) {
+			return new Point((int)(x * xScale), (int)(y * yScale));
 		}
 		public Image scaleImage(Image img) {
 			return img.getScaledInstance((int)(img.getWidth(null)*xScale), (int)(img.getHeight(null)*yScale), Image.SCALE_SMOOTH);
@@ -204,9 +198,9 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 	private abstract class MakerbotArrangement extends DefaultArrangement {
 		
 		public String extruderImageString = "extruder";
-		public Point2i extruderImageLocation = null;
+		public Point extruderImageLocation = null;
 		public String buildplateImageString = "buildplate";
-		public Point2i buildplateImageLocation = null;
+		public Point buildplateImageLocation = null;
 		
 		public MakerbotArrangement(MachineInterface machine) {
 			super(machine);
