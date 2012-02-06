@@ -492,20 +492,20 @@ public class DriverBaseImplementation implements Driver, DriverQueryInterface{
 		/// toolhead -1 indicate auto-detect. Fast hack to get software out..
 		if(toolhead == -1 ) toolhead = machine.currentTool().getIndex();
 
-		machine.getTool(toolhead).setMotorSpeedRPM(rpm);
+		machine.getTool(toolhead).setCachedMotorRPM(rpm);
 
 	}
 	
 	@Override
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
-		this.setMotorSpeedPWM(pwm, machine.currentTool().getIndex());
+	public void setMotorPWM(int pwm) throws RetryException {
+		this.setMotorPWM(pwm, -1);
 	}
 	
-	public void setMotorSpeedPWM(int pwm, int toolhead) throws RetryException {
+	public void setMotorPWM(int pwm, int toolhead) throws RetryException {
 		/// toolhead -1 indicate auto-detect.Fast hack to get software out..
 		if(toolhead == -1 ) toolhead = machine.currentTool().getIndex();
 
-		machine.getTool(toolhead).setMotorSpeedPWM(pwm);
+		machine.getTool(toolhead).setCachedMotorPWM(pwm);
 	}
 
 	
@@ -553,11 +553,16 @@ public class DriverBaseImplementation implements Driver, DriverQueryInterface{
 	}
 
 	public double getMotorRPM() {
-		return machine.currentTool().getMotorSpeedRPM();
+		return machine.currentTool().getCachedMotorRPM();
 	}
 
-	public int getMotorSpeedPWM() {
-		return machine.currentTool().getMotorSpeedReadingPWM();
+	public double getMotorDefaultRPM() {
+		return machine.currentTool().getMotorDefaultRPM();
+	}
+
+	
+	public int getMotorPWM() {
+		return machine.currentTool().getCachedMotorPWM();
 	}
 
 	public double getMotorSteps() {

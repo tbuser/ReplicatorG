@@ -267,7 +267,7 @@ public class MightyBoard extends Makerbot4GAlternateDriver
 		// initalize 'running' motor speed to be the same as the 
 		// default motor speed
 		ToolModel curTool = machine.getTool(toolIndex);
-		curTool.setMotorSpeedReadingRPM( curTool.getMotorSpeedRPM() );
+		curTool.setCachedMotorRPM( curTool.getMotorDefaultRPM() );
 		return true;
 	}
 
@@ -1307,7 +1307,7 @@ public class MightyBoard extends Makerbot4GAlternateDriver
 
 		///TRICKY: fot The Replicator,the firmware no longer handles this command
 		// it's all done on host side via 5D command translation.  We just set a local value
-		curTool.setMotorSpeedRPM(rpm);
+		curTool.setCachedMotorRPM(rpm);
 	}
 	
 	/**

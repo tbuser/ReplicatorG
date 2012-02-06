@@ -1048,13 +1048,13 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		super.setMotorRPM(rpm, toolhead);
 	}
 
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
+	public void setMotorPWM(int pwm) throws RetryException {
 		if (fiveD == false)
 		{
 			sendCommand(_getToolCode() + "M108 S" + df.format(pwm));
 		}
 
-		super.setMotorSpeedPWM(pwm);
+		super.setMotorPWM(pwm);
 	}
 	
 	public synchronized void enableMotor() throws RetryException {
@@ -1090,7 +1090,7 @@ public class RepRap5DDriver extends SerialDriver implements SerialFifoEventListe
 		else
 		{
 			super.enableMotor();
-			double feedrate = machine.currentTool().getMotorSpeedRPM();
+			double feedrate = machine.currentTool().getCachedMotorRPM();
 			double distance = millis * feedrate / 60 / 1000;
 			if (machine.currentTool().getMotorDirection() != 1) {
 				distance *= -1;

@@ -508,9 +508,9 @@ public class GCodeParser {
 		// set max extruder speed, RPM
 		case M108:
 			if (gcode.hasCode('S'))
-				commands.add(new replicatorg.drivers.commands.SetMotorSpeedPWM((int)gcode.getCodeValue('S')));
+				commands.add(new replicatorg.drivers.commands.SetMotorPWM((int)gcode.getCodeValue('S')));
 			else if (gcode.hasCode('R'))
-				commands.add(new replicatorg.drivers.commands.SetMotorSpeedRPM(gcode.getCodeValue('R')));
+				commands.add(new replicatorg.drivers.commands.SetMotorRPM(gcode.getCodeValue('R')));
 			break;
 		// set build platform temperature
 		case M109:

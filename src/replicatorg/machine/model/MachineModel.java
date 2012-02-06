@@ -401,9 +401,25 @@ public class MachineModel
 	*  Reporting available axes
 	*************************************/
 	
-	/** Return a set enumerating all the axes that this machine has available.
+	/** 
+	 * Return a set enumerating all the axes that this machine has available.
 	 */
 	public Set<AxisId> getAvailableAxes() { return axes; }
+
+	/**
+	 * returns a set enumerating the non-overridden axes from the machine.
+	 * @return
+	 */
+	public Set<AxisId> getRawAxes() { 
+		Set<AxisId> rawAxes = axes;
+		for(ToolModel t : tools) {
+			AxisId override = t.getMotorStepperAxis();
+			if( (override != null) && axes.contains(override) )
+				rawAxes.remove(override);
+		}
+		return rawAxes;			
+	}
+	
 	/** Report whether this machine has the specified axis.
 	 * @param id The axis to check
 	 * @return true if the axis is available, false otherwise

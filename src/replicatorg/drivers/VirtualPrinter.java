@@ -41,55 +41,55 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 	
 	@Override
 	public void loadXML(Node xml) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		machineModel.loadXML(xml);
 	}
 
 	@Override
 	public boolean isPassthroughDriver() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return false;
 	}
 
 	@Override
 	public void executeGCodeLine(String code) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public boolean isFinished() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return true;
 	}
 
 	@Override
 	public boolean isBufferEmpty() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return true;
 	}
 
 	@Override
 	public void assessState() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public boolean hasError() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return false;
 	}
 
 	@Override
 	public DriverError getError() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return null;
 	}
 
 	@Override
 	public void checkErrors() throws BuildFailureException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
@@ -105,13 +105,13 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public boolean isInitialized() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return isInitialized;
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
@@ -127,13 +127,13 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public String getDriverName() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return "VirtualPrinter";
 	}
 
 	@Override
 	public String getFirmwareInfo() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return firmwareInfo;
 	}
 
@@ -144,19 +144,19 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public void updateManualControl() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public Version getMinimumVersion() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return minimumVersion;
 	}
 
 	@Override
 	public Version getPreferredVersion() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return preferredVersion;
 	}
 
@@ -167,19 +167,19 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public void storeHomePositions(EnumSet<AxisId> axes) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void recallHomePositions(EnumSet<AxisId> axes) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public boolean positionLost() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return false;
 	}
 
@@ -227,69 +227,69 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public Point5d getPosition() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return currentPosition;
 	}
 
 	@Override
 	public void requestToolChange(int toolIndex, int timeout)
 			throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void selectTool(int toolIndex) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void setFeedrate(double feed) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public double getCurrentFeedrate() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return 0;
 	}
 
 	@Override
 	public void homeAxes(EnumSet<AxisId> axes, boolean positive, double feedrate)
 			throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void delay(long millis) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void openClamp(int clampIndex) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void closeClamp(int clampIndex) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void enableDrives() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void disableDrives() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
@@ -304,109 +304,100 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public void changeGearRatio(int ratioIndex) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void readToolStatus() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public int getToolStatus() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return 0;
 	}
 
 	@Override
 	public void setMotorDirection(int dir) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void setMotorRPM(double rpm, int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
-		// TODO Auto-generated method stub
-
+	public void setMotorPWM(int pwm) throws RetryException {
+		// this space intentionally left blank
 	}
 
 	@Override
 	public double getMotorRPM() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int getMotorSpeedPWM() {
-		// TODO Auto-generated method stub
+	public int getMotorPWM() {
 		return 0;
 	}
 
 	@Override
 	public void enableMotor() throws RetryException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void enableMotor(long millis) throws RetryException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void disableMotor() throws RetryException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void setSpindleRPM(double rpm) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void setSpindleSpeedPWM(int pwm) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void setSpindleDirection(int dir) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public double getSpindleRPM() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return 0;
 	}
 
 	@Override
 	public int getSpindleSpeedPWM() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return 0;
 	}
 
 	@Override
 	public void enableSpindle() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void disableSpindle() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
@@ -479,72 +470,72 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 
 	@Override
 	public void setChamberTemperature(double temperature) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void readChamberTemperature() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public double getChamberTemperature() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return 0;
 	}
 
 	@Override
 	public void enableFloodCoolant() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void disableFloodCoolant() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void enableMistCoolant() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void disableMistCoolant() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void enableFan() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void disableFan() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 	
 	@Override 
 	public void setAutomatedBuildPlatformRunning(boolean state) throws RetryException {
-		//TODO: manually added
+		// this space intentionally left blank
 	}
 	
 	@Override
 	public void openValve() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void closeValve() throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
@@ -585,129 +576,129 @@ public class VirtualPrinter implements Driver, DriverQueryInterface {
 	
 	@Override
 	public void openCollet() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void closeCollet() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void unpause() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public void stop(boolean abort) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public boolean hasSoftStop() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return hasSoftStop;
 	}
 
 	@Override
 	public boolean hasEmergencyStop() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return hasEStop;
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 
 	}
 
 	@Override
 	public boolean heartbeat() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return false;
 	}
 
 	@Override
 	public Point5d getMaximumFeedrates() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return maximumFeedrates;
 	}
 
 	@Override
 	public boolean hasAutomatedBuildPlatform() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		return true;
 	}
 
 	@Override
 	public void readAllTemperatures() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void readAllPlatformTemperatures() {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	
 	@Override
 	public void setMotorDirection(int dir, int toolhead) {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
-	public void setMotorSpeedPWM(int pwm, int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+	public void setMotorPWM(int pwm, int toolhead) throws RetryException {
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void enableMotor(int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void enableMotor(long millis, int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void disableMotor(int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void enableFan(int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void disableFan(int toolhead) throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 
 	@Override
 	public void setAutomatedBuildPlatformRunning(boolean state, int toolhead)
 			throws RetryException {
-		// TODO Auto-generated method stub
+		// this space intentionally left blank
 		
 	}
 

@@ -616,7 +616,7 @@ public class Sanguino3GDriver extends SerialDriver implements
 		ToolModel curToolMod = getMachine().getTool(toolhead);
 		if (curToolMod != null) {
 			if(curToolMod.motorIsStepper()) {
-				double targetRPM =  curToolMod.getMotorSpeedRPM();
+				double targetRPM =  curToolMod.getMotorDefaultRPM();
 				///set 'running RPM' to be the same as the default RPM
 				try { 
 					this.setMotorRPM( targetRPM, toolhead );
@@ -627,10 +627,10 @@ public class Sanguino3GDriver extends SerialDriver implements
 				}
 			}
 			else {
-				int targetPWM =  curToolMod.getMotorSpeedPWM();
+				int targetPWM =  curToolMod.getMotorDefaultPWM();
 				///set 'running PWM' to be the same as the default PWM
 				try { 
-					this.setMotorSpeedPWM( targetPWM, toolhead );
+					this.setMotorPWM( targetPWM, toolhead );
 				}
 				catch (replicatorg.drivers.RetryException e)
 				{
@@ -943,12 +943,10 @@ public class Sanguino3GDriver extends SerialDriver implements
 	 **************************************************************************/
 	public void setMotorRPM(double rpm, int toolhead) throws RetryException {
 
-		/// toolhead -1 indicate auto-detect.Fast hack to get software out..
+		/// toolhead -1 indicate auto-detect. Fast hack to get software out..
 		if(toolhead == -1 ) toolhead = machine.currentTool().getIndex();
 		// convert RPM into microseconds and then send.
-		long microseconds = rpm == 0 ? 0 : Math.round(60.0 * 1000000.0 / rpm); // no
-		// unsigned
-		// ints?!?
+		long microseconds = rpm == 0 ? 0 : Math.round(60.0 * 1000000.0 / rpm); // no unsigned ints?!?
 		// microseconds = Math.min(microseconds, 2^32-1); // limit to uint32.
 
 		Base.logger.fine("Setting motor 1 speed to " + rpm + " RPM ("
@@ -966,18 +964,19 @@ public class Sanguino3GDriver extends SerialDriver implements
 		//TRICKY: WAS 'super.setMotorRPM(rpm);', but this seems not to work right.
 		// Seems to set default motor value(motorSpeedRPM , not 'running' motor
 		// value. Caused gui to show bad values
-//		machine.getTool(toolhead).setMotorSpeedReadingRPM(rpm);
+//		machine.getTool(toolhead).setMotorSpeedRPM(rpm);
 //		Changed back - Ted
+		Base.logger.severe("Sanguino3GDriver set motor RPM" + rpm + " toolhead" + toolhead);
 		super.setMotorRPM(rpm, toolhead);
 	}
 
 	
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
-		this.setMotorSpeedPWM(pwm, machine.currentTool().getIndex());
+	public void setMotorPWM(int pwm) throws RetryException {
+		this.setMotorPWM(pwm, machine.currentTool().getIndex());
 	}
 	
 	
-	public void setMotorSpeedPWM(int pwm, int toolhead) throws RetryException {
+	public void setMotorPWM(int pwm, int toolhead) throws RetryException {
 	
 		/// toolhead -1 indicate auto-detect.Fast hack to get software out..
 		if(toolhead == -1 ) toolhead = machine.currentTool().getIndex();
@@ -999,7 +998,7 @@ public class Sanguino3GDriver extends SerialDriver implements
 		pb.add8((byte) ((pwm > 255) ? 255 : pwm));
 		runCommand(pb.getPacket());
 
-		super.setMotorSpeedPWM(pwm, toolhead);
+		super.setMotorPWM(pwm, toolhead);
 	}
 
 	@Deprecated
@@ -1081,7 +1080,7 @@ public class Sanguino3GDriver extends SerialDriver implements
 		Base.logger.fine("Current motor 1 PWM: " + pwm);
 
 		// set it.
-		machine.getTool(toolhead).setMotorSpeedReadingPWM(pwm);
+		machine.getTool(toolhead).setCachedMotorPWM(pwm);
 
 		return pwm;
 	}
@@ -1110,8 +1109,8 @@ public class Sanguino3GDriver extends SerialDriver implements
 
 		Base.logger.fine("Current motor 1 RPM: " + rpm + " (" + micros + ")");
 
-		// set it.
-		machine.getTool(toolhead).setMotorSpeedReadingRPM(rpm);
+		// set a cached value
+		machine.getTool(toolhead).setCachedMotorRPM(rpm);
 
 		return rpm;
 	}
@@ -2831,6 +2830,5 @@ public class Sanguino3GDriver extends SerialDriver implements
 
 	/// Sets the number of tool count as saved on the machine (not as per XML count)
 	@Override 
-	public void setToolCountOnboard(int i){ }; 
-
+	public void setToolCountOnboard(int i){ };
 }

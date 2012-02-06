@@ -3,22 +3,22 @@ package replicatorg.drivers.commands;
 import replicatorg.drivers.Driver;
 import replicatorg.drivers.RetryException;
 
-public class SetMotorSpeedPWM implements DriverCommand {
+public class SetMotorRPM implements DriverCommand {
 
-	int pwm;
+	double rpm;
 	int toolhead = -1; /// by default, get current tool at dispatch time
-
-	public SetMotorSpeedPWM(int pwm) {
-		this.pwm = pwm;
+	
+	public SetMotorRPM(double rpm) {
+		this.rpm = rpm;
 	}
 
-	public SetMotorSpeedPWM(int pwm, int toolhead) {
-		this.pwm = pwm;
+	public SetMotorRPM(double rpm, int toolhead) {
+		this.rpm = rpm;
 		this.toolhead = toolhead;
 	}
 
 	@Override
 	public void run(Driver driver) throws RetryException {
-		driver.setMotorSpeedPWM(pwm,toolhead);
+		driver.setMotorRPM(rpm,toolhead);
 	}
 }

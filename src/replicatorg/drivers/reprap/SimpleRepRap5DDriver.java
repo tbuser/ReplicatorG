@@ -419,10 +419,10 @@ public class SimpleRepRap5DDriver extends SerialDriver {
 		super.setMotorRPM(rpm, toolhead);
 	}
 
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
+	public void setMotorPWM(int pwm) throws RetryException {
 		sendCommand(_getToolCode() + "M108 S" + df.format(pwm));
 
-		super.setMotorSpeedPWM(pwm);
+		super.setMotorPWM(pwm);
 	}
 
 	public void enableMotor() throws RetryException {

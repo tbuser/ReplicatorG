@@ -24,14 +24,6 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 		return "Makerbot4GAlternate";
 	}
 	
-	public void reset() {
-		// We should poll the machine for it's state here, but it is more important to have the
-		// fan on than off.
-		stepperExtruderFanEnabled = false;
-
-		super.reset();
-	}
-	
 	/** The excess, in steps, from previous operations. */ 
 	private Point5d stepExcess = new Point5d();
 	
@@ -158,21 +150,6 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 	}
 
 	
-	/** 
-	 * Each Axis can be overriden (hijacked) by XML settings. Return all overridden
-	 * axes for the currently loaded machine.
-	 * @return a list of AxisId containing all overriden axis for the loaded machine profile
-	 */
-	protected Iterable<AxisId> getAllHijackedAxes() {
-		Vector<AxisId> axes = new Vector<AxisId>();
-
-		for ( Map.Entry<AxisId,ToolModel> entry : extruderHijackedMap.entrySet()) {
-			AxisId axis = entry.getKey();
-			axes.add(axis);
-		}
-		return axes;
-	}
-	
 	/**
 	 * Calculate and return the corresponding movement of any hijacked axes where the extruder is on.
 	 * The returned movement is in mm of incoming filament (corresponding to mm in machines.xml)
@@ -188,7 +165,7 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 		for (AxisId axis : getHijackedAxes(machine.currentTool()) ) {
 			ToolModel curTool = machine.currentTool();
 			if (curTool.isMotorEnabled()) {
-				double extruderStepsPerMinute = curTool.getMotorSpeedRPM() * curTool.getMotorSteps();
+				double extruderStepsPerMinute = curTool.getCachedMotorRPM() * curTool.getMotorSteps();
 				final boolean clockwise = machine.currentTool().getMotorDirection() == ToolModel.MOTOR_CLOCKWISE;
 				movement.setAxis(axis, extruderStepsPerMinute * minutes / machine.getStepsPerMM().axis(axis) * (clockwise?-1d:1d));
 			}
@@ -221,7 +198,7 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 			if (curTool.isMotorEnabled()) {
 				Base.logger.finer("modify hijacked axes doing enabled stuff" + axis.toString() );
 				double maxrpm = machine.getMaximumFeedrates().axis(axis) * machine.getStepsPerMM().axis(axis) / curTool.getMotorSteps();
-				double rpm = (curTool.getMotorSpeedRPM() > maxrpm) ? maxrpm : curTool.getMotorSpeedRPM();
+				double rpm = (curTool.getCachedMotorRPM() > maxrpm) ? maxrpm : curTool.getCachedMotorRPM();
 				boolean clockwise = machine.currentTool().getMotorDirection() == ToolModel.MOTOR_CLOCKWISE;
 				extruderSteps = rpm * curTool.getMotorSteps() * minutes * (clockwise?-1d:1d);
 			}
@@ -231,16 +208,6 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 			steps.setAxis(axis, extruderSteps);
 		}
 		return steps;
-	}
-
-	public void stop(boolean abort) {
-		// Record the toolstate as off, so we don't excite the extruder motor in future moves.
-		machine.currentTool().disableMotor();
-
-		// We should stop the fan here, but it will be stopped for us by the super.
-		stepperExtruderFanEnabled = false;
-
-		super.stop(abort);
 	}
 
 	protected void queueNewPoint(Point5d steps, long us, int relative) throws RetryException {
@@ -271,126 +238,14 @@ public class Makerbot4GAlternateDriver extends Makerbot4GDriver {
 		runCommand(pb.getPacket());
 	}
 	
-	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
-	 */
-	public void enableMotor() throws RetryException {
-		machine.currentTool().enableMotor();
-	}
-	
-	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
-	 */
-	public void disableMotor() throws RetryException {
-		machine.currentTool().disableMotor();
-	}
-	
-	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
-	 */
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
-		machine.currentTool().setMotorSpeedPWM(pwm);
-	}
-
-	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
-	 */
-	public void setMotorRPM(double rpm, int toolhead) throws RetryException {
-		machine.currentTool().setMotorSpeedRPM(rpm);
-	}
-
-	public void enableDrives() throws RetryException {
-		enableStepperExtruderFan(true);
-		
-		super.enableDrives();
-	}
-
-	public void disableDrives() throws RetryException {
-		enableStepperExtruderFan(false);
-		
-		super.disableDrives();
-	}
-	
-	/**
-	 * Will turn on/off the stepper extruder fan if it's not already in the correct state.
-	 * 
-	 */
-	public void enableStepperExtruderFan(boolean enabled) throws RetryException {
-		
-		// Always re-enable the fan when 
-		if (this.stepperExtruderFanEnabled == enabled) return;
-		
-		// FIXME: Should be called per hijacked axis with the correct tool
-		// our flag variable starts with motors enabled.
-		byte flags = (byte) (enabled ? 1 : 0);
-
-		// bit 1 determines direction...
-		flags |= 2;
-
-		Base.logger.log(Level.FINE,"Stepper Extruder fan w/flags: "
-					+ Integer.toBinaryString(flags));
-
-		// send it!
-		PacketBuilder pb = new PacketBuilder(MotherboardCommandCode.TOOL_COMMAND.getCode());
-		pb.add8((byte) machine.currentTool().getIndex());
-		pb.add8(ToolCommandCode.TOGGLE_MOTOR_1.getCode());
-		pb.add8((byte) 1); // payload length
-		pb.add8(flags);
-		runCommand(pb.getPacket());
-
-		// Always use max PWM
-		pb = new PacketBuilder(MotherboardCommandCode.TOOL_COMMAND.getCode());
-		pb.add8((byte) machine.currentTool().getIndex());
-		pb.add8(ToolCommandCode.SET_MOTOR_1_PWM.getCode());
-		pb.add8((byte) 1); // length of payload.
-		pb.add8((byte) 255);
-		runCommand(pb.getPacket());
-		
-		this.stepperExtruderFanEnabled = enabled;
-	}
-
-	/// This is a list of which axis are hijacked for extruder use.
-	EnumMap<AxisId,ToolModel> extruderHijackedMap = new EnumMap<AxisId,ToolModel>(AxisId.class);
 	
 	@Override
 	/**
-	 * When the machine is set for this driver, some toolheads may poach the an extrusion axis.
-	 */
-	public void setMachine(MachineModel m) {
-		super.setMachine(m);
-		for (ToolModel tm : m.getTools()) {
-			Element e = (Element)tm.getXml();
-			if (e.hasAttribute("stepper_axis")) {
-				final String stepAxisStr = e.getAttribute("stepper_axis");
-				try {
-					AxisId axis = AxisId.valueOf(stepAxisStr.toUpperCase());
-					if (m.hasAxis(axis)) {
-						Base.logger.finer("seize the axis for extrusion!  Hijacking axis "+axis.name());
-						// If we're seizing an axis for an extruder, remove it from the available axes and get
-						// the data associated with that axis.
-						extruderHijackedMap.put(axis,tm);
-						m.getAvailableAxes().remove(axis);
-					} else {
-						Base.logger.severe("Tool claims unavailable axis "+axis.name());
-					}
-				} catch (IllegalArgumentException iae) {
-					Base.logger.severe("Unintelligible axis designator "+stepAxisStr);
-				}
-			}
-		}
-	}
-	
-	@Override
-	/**
-	 * Overridden to not ask the board for the RPM as it would report the RPM from the extruder 
-	 * controller, which doesn't know about it in this case.
+	 * Overridden to not ask the board for the RPM as it would report.
+	 * use the cache version (which is the default xml value unless overridden.
 	 */
 	public double getMotorRPM() {
-		double rpm = machine.currentTool().getMotorSpeedRPM();
-		machine.currentTool().setMotorSpeedReadingRPM(rpm);
-		return rpm;
+		return machine.currentTool().getCachedMotorRPM();
 	}
-	
-	@Override 
-	public String getMachineType(){ return "Thing-O-Matic/CupCake CNC"; } 
+ 
 }

@@ -162,8 +162,8 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 			
 			JPanel panel = new JPanel(new MigLayout());
 			
-			Set<AxisId> axes = machine.getModel().getAvailableAxes();
-		
+			//Set<AxisId> axes = machine.getModel().getAvailableAxes();
+			Set<AxisId> axes = machine.getModel().getRawAxes();
 			JButton button = createJogButton(xMinusButtonString, xMinusTooltip, this, jogXMinusAction);
 			panel.add(button, "pos "+xMinusButtonLocation.x+" "+xMinusButtonLocation.y);
 			button = createJogButton(xPlusButtonString, xPlusTooltip, this, jogXPlusAction);
@@ -473,7 +473,8 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 		positionPanel.add(jogList,"growx");
 		
 		// our position text boxes
-		for (final AxisId axis : machine.getModel().getAvailableAxes()) {
+//		for (final AxisId axis : machine.getModel().getAvailableAxes()) {
+		for (final AxisId axis : machine.getModel().getRawAxes()) {
 			JTextField f = createDisplayField();
 			positionFields.put(axis, f);
 			positionPanel.add(new JLabel(axis.name()),"split 3,flowx");
@@ -576,8 +577,9 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 	public JogPanel(MachineInterface machine) {
 		feedrate = new Point5d();
 		this.machine = machine;
-		Set<AxisId> axes = machine.getModel().getAvailableAxes();
-		
+		//Set<AxisId> axes = machine.getModel().getAvailableAxes();
+		Set<AxisId> axes = machine.getModel().getRawAxes();
+
 		setLayout(new MigLayout("gap 0, ins 0"));
 		
 		// compile our regexes
@@ -634,7 +636,8 @@ public class JogPanel extends JPanel implements ActionListener, MouseListener
 	synchronized public void updateStatus() {
 		Point5d current = machine.getDriverQueryInterface().getCurrentPosition(false);
 
-		for (AxisId axis : machine.getModel().getAvailableAxes()) {
+		for(AxisId axis : machine.getModel().getRawAxes() ) { 
+//		for (AxisId axis : machine.getModel().getAvailableAxes()) {
 			double v = current.axis(axis);
 			positionFields.get(axis).setText(positionFormatter.format(v));
 		}

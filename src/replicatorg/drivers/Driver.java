@@ -273,14 +273,18 @@ public interface Driver {
 	public void setMotorDirection(int dir);
 	public void setMotorDirection(int dir, int toolhead);
 
+	// Set the currently active motor speed in RPM
 	public void setMotorRPM(double rpm, int toolhead) throws RetryException;
-
-	public void setMotorSpeedPWM(int pwm) throws RetryException;
-	public void setMotorSpeedPWM(int pwm, int toolhead) throws RetryException;
-
+	 
+	//public double getMotorDefaultRPM();
 	public double getMotorRPM();
 
-	public int getMotorSpeedPWM();
+	
+	/// Set the currently active motor speed in RPM
+	public void setMotorPWM(int pwm) throws RetryException;
+	public void setMotorPWM(int pwm, int toolhead) throws RetryException;
+	public int getMotorPWM();
+
 
 	/**
 	 * Enable motor until stopped by disableMotor

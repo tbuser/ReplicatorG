@@ -69,7 +69,7 @@ public class Makerbot4GDriver extends Sanguino3GDriver {
 	/** 
 	 * Returns the hijacked axes for all tools.
 	 */
-	private Iterable<AxisId> getAllHijackedAxes() {
+	protected Iterable<AxisId> getAllHijackedAxes() {
 		Vector<AxisId> axes = new Vector<AxisId>();
 		for ( Map.Entry<AxisId,ToolModel> entry : extruderHijackedMap.entrySet()) {
 			AxisId axis = entry.getKey();
@@ -165,17 +165,19 @@ public class Makerbot4GDriver extends Sanguino3GDriver {
 	}
 	
 	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
+	 * Overridden to not talk to the DC motor driver.
+	 * This driver is reused for the stepper motor fan
 	 */
-	public void setMotorSpeedPWM(int pwm) throws RetryException {
-		machine.currentTool().setMotorSpeedPWM(pwm);
+	public void setMotorPWM(int pwm) throws RetryException {
+		machine.currentTool().setCachedMotorPWM(pwm);
 	}
 
 	/**
-	 * Overridden to not talk to the DC motor driver. This driver is reused for the stepper motor fan
+	 * Overridden to not talk to the DC motor driver. 
+	 * This driver is reused for the stepper motor fan.
 	 */
 	public void setMotorRPM(double rpm, int toolhead) throws RetryException {
-		machine.currentTool().setMotorSpeedRPM(rpm);
+		machine.currentTool().setCachedMotorRPM(rpm);
 	}
 	
 	

@@ -271,11 +271,11 @@ public class ExtruderPanel extends JPanel{
 						JFormattedTextField source = (JFormattedTextField)e.getSource();
 						if (source.getText().length() > 0) {
 							double newValue = ((Number)source.getValue()).doubleValue();
-							machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedPWM((int)newValue, tool.getIndex()));
+							machine.runCommand(new replicatorg.drivers.commands.SetMotorPWM((int)newValue, tool.getIndex()));
 						}
 					}
 				}, "handleTextField", "motor-speed-pwm", 5, Base.getLocalFormat());
-				field.setValue(machine.getDriverQueryInterface().getMotorSpeedPWM());
+				field.setValue(machine.getDriverQueryInterface().getMotorPWM());
 				panel.add(label);
 				panel.add(field,"wrap");
 			}
@@ -290,11 +290,11 @@ public class ExtruderPanel extends JPanel{
 						JFormattedTextField source = (JFormattedTextField)e.getSource();
 						if (source.getText().length() > 0) {
 							double newValue = ((Number)source.getValue()).doubleValue();
-							machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedRPM(newValue, tool.getIndex()));
+							machine.runCommand(new replicatorg.drivers.commands.SetMotorRPM(newValue, tool.getIndex()));
 						}
 					}
 				}, "handleTextField", "motor-speed", 5, Base.getLocalFormat());
-				field.setValue(tool.getMotorSpeedReadingRPM() );// <-- should be
+				field.setValue(tool.getCachedMotorRPM() );// <-- should be
 				//field.setValue(machine.getDriver().getMotorRPM());
 				panel.add(label, "");
 				panel.add(field,"wrap");
@@ -802,14 +802,14 @@ public class ExtruderPanel extends JPanel{
 				machine.runCommand(new replicatorg.drivers.commands.SetMotorDirection(AxialDirection.CLOCKWISE,toolhead));
 				// TODO: Hack to support RepRap/Ultimaker- always re-send RPM
 				if (tool.motorHasEncoder() || tool.motorIsStepper()) {
-					machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedRPM(machine.getDriver().getMotorRPM(),toolhead));
+					machine.runCommand(new replicatorg.drivers.commands.SetMotorRPM(machine.getDriver().getMotorRPM(),toolhead));
 				}
 				machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor(toolhead));
 			} else if (name.equals("motor-reverse")) {
 				machine.runCommand(new replicatorg.drivers.commands.SetMotorDirection(AxialDirection.COUNTERCLOCKWISE,toolhead));
 				// TODO: Hack to support RepRap/Ultimaker- always re-send RPM
 				if (tool.motorHasEncoder() || tool.motorIsStepper()) {
-					machine.runCommand(new replicatorg.drivers.commands.SetMotorSpeedRPM(machine.getDriver().getMotorRPM(),toolhead));
+					machine.runCommand(new replicatorg.drivers.commands.SetMotorRPM(machine.getDriver().getMotorRPM(),toolhead));
 				}
 				machine.runCommand(new replicatorg.drivers.commands.EnableExtruderMotor(toolhead));
 			} else if (name.equals("motor-stop")) {

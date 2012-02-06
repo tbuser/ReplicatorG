@@ -74,11 +74,14 @@ public class ToolModel
 	//motor stuff
 	protected boolean motorEnabled;
 	protected int motorDirection;
-	protected double motorSpeedRPM;
-	protected int motorSpeedPWM;
+	
+	// get the default motor speed value(s)
+	protected double motorDefaultRPM;
+	protected int motorDefaultPWM;
 
-	protected double motorSpeedReadingRPM;
-	protected int motorSpeedReadingPWM;
+	// get a cached copy of the currently set motor speed
+	protected double cachedMotorRPM;
+	protected int cachedMotorPWM;
 
 	protected boolean motorUsesRelay = false;
 	protected boolean motorHasEncoder;
@@ -252,17 +255,17 @@ public class ToolModel
 			
 			n = XML.getAttributeValue(xml, "default_rpm");
 			try{
-				if (n != null && Double.parseDouble(n) > 0)
-				{
-					motorSpeedRPM = Double.parseDouble(n);
+				if (n != null && Double.parseDouble(n) > 0) {
+					motorDefaultRPM = Double.parseDouble(n);
+					cachedMotorRPM = motorDefaultRPM; //until overwritten, use cahced
 				}
 			} catch (Exception e) {} // ignore parse errors.
 
 			n = XML.getAttributeValue(xml, "default_pwm");
 			try{
-				if (n != null && Integer.parseInt(n) > 0)
-				{
-					motorSpeedPWM = Integer.parseInt(n);
+				if (n != null && Integer.parseInt(n) > 0) {
+					motorDefaultPWM = Integer.parseInt(n);
+					cachedMotorPWM = motorDefaultPWM; //until overwritten, use cahced
 				}
 			} catch (Exception e) {} // ignore parse errors.
 			
@@ -408,23 +411,23 @@ public class ToolModel
 	 *  Motor speed *read from the XML*
 	 * @return
 	 */
-	public void setMotorSpeedRPM(double rpm)
+	public void setMotorSpeedDefaultRPM(double rpm)
 	{
-		motorSpeedRPM = rpm;
+		motorDefaultRPM = rpm;
 	}
 
 	/**
 	 *  Motor speed *read from the XML*
 	 * @return
 	 */
-	public void setMotorSpeedPWM(int pwm)
+	public void setMotorSpeedDefaultPWM(int pwm)
 	{
-		motorSpeedPWM = pwm;
+		motorDefaultPWM = pwm;
 	}
 	
-	public double getMotorSpeedRPM()
+	public double getMotorDefaultRPM()
 	{
-		return motorSpeedRPM;
+		return motorDefaultRPM;
 	}
 	
 	/**
@@ -439,9 +442,9 @@ public class ToolModel
 	 *  Motor speed *read from the XML*
 	 * @return
 	 */
-	public int getMotorSpeedPWM()
+	public int getMotorDefaultPWM()
 	{
-		return motorSpeedPWM;
+		return motorDefaultPWM;
 	}
 	
 
@@ -454,36 +457,36 @@ public class ToolModel
 	 *  Motor speed *read from the device*
 	 * @param rpm
 	 */
-	public void setMotorSpeedReadingRPM(double rpm)
+	public void setCachedMotorRPM(double rpm)
 	{
-		motorSpeedReadingRPM = rpm;
+		cachedMotorRPM = rpm;
 	}
 	
 	/**
 	 *  Motor speed *read from the device*
 	 * @param rpm
 	 */	
-	public void setMotorSpeedReadingPWM(int pwm)
+	public void setCachedMotorPWM(int pwm)
 	{
-		motorSpeedReadingPWM = pwm;
+		cachedMotorPWM = pwm;
 	}
 	
 	/**
 	 *  Motor speed *read from the device*
 	 * @param rpm
 	 */	
-	public double getMotorSpeedReadingRPM()
+	public double getCachedMotorRPM()
 	{
-		return motorSpeedReadingRPM;
+		return cachedMotorRPM;
 	}
 
 	/**
 	 *  Motor speed *read from the device*
 	 * @param rpm
 	 */	
-	public int getMotorSpeedReadingPWM()
+	public int getCachedMotorPWM()
 	{
-		return motorSpeedReadingPWM;
+		return cachedMotorPWM;
 	}
 	
 	public void enableMotor()

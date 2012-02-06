@@ -19,7 +19,7 @@ public interface DriverQueryInterface {
 	
 	public double getMotorRPM();
 	
-	public int getMotorSpeedPWM();
+	public int getMotorPWM();
 
 	/** relies on timing to have the 'right selected toolhead', deprecated */
 	@Deprecated
