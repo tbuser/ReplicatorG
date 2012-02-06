@@ -137,7 +137,7 @@ public class ControlPanelWindow extends JFrame implements
 		{
 			public void actionPerformed(ActionEvent e){
 				Color ledColor = chooser.getColor();
-				Base.logger.severe("running setLedStrip");
+				Base.logger.finer("running setLedStrip");
 				try { 
 					machine.getDriver().setLedStrip(ledColor, 0);
 				} catch (replicatorg.drivers.RetryException f) {
